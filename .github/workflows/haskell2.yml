@@ -1,0 +1,26 @@
+
+name: Haskell CI
+
+on:
+  pull_request:
+    branches: [ "main", "dev" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-haskell@v1
+      with:
+        ghc-version: '8.8.3'
+        enable-stack: true
+        stack-version: 'latest'
+    - name: Build
+      run: stack build
+    - name: Run tests
+      run: stack test
