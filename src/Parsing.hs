@@ -20,12 +20,12 @@ parseAnyChar s = Parser {
                               | otherwise -> Nothing
 }
 
-parseOr :: Parser a -> Parser a -> Parser a
-parseOr f1 f2 = Parser {
-    runParser = \xs -> case f1 xs of
-                    Just n -> Just n
-                    Nothing -> f2 xs
-}
+-- parseOr :: Parser a -> Parser a -> Parser a
+-- parseOr f1 f2 = Parser {
+--     runParser = \xs -> case f1 xs of
+--                     Just n -> Just n
+--                     Nothing -> f2 xs
+-- }
 
 -- parseAnd :: Parser a -> Parser b -> Parser (a, b)
 -- parseAnd f1 f2 x = case f1 x of
