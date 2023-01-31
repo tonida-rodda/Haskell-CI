@@ -1,0 +1,27 @@
+name: Haskell CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Haskell environment
+      uses: actions/setup-haskell@v1
+      with:
+        ghc-version: 8.6.5
+
+    - name: Build project
+      run: |
+        cabal v2-build
+
+    - name: Test project
+      run: |
+        cabal v2-test
