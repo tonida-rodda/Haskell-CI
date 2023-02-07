@@ -1,24 +1,40 @@
-name: Haskell CI
+name: Haskell CI and Release
 
-on: [push, pull_request]
-
-permissions:
-  contents: read
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-haskell@v1
-      with:
-        ghc-version: '8.10.3'
-        enable-stack: true
-        stack-version: 'latest'
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: Build
-      run: make re
-    - name: Run tests
-      run: stack test
+    - name: Set up Haskell
+      uses: actions/setup-haskell@v1
+      with:
+        ghc-version: 8.8.3
+
+    - name: Install dependencies
+      run: |
+        cabal update
+        cabal install --only-dependencies
+
+    - name: Build project
+      run: cabal build
+
+    - name: Test project
+      run: cabal test
+
+    - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            LICENSE.txt
+            *.jar
